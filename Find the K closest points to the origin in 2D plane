@@ -1,0 +1,49 @@
+public class Point implements Comparable<Point> {
+
+    public double x;
+
+    public double y;
+
+    public double distanceFromOrigin(){
+            return (this.x*this.x + this.y*this.y); //there is no need add the square root overhead as we only need to compare the distance
+    }
+
+    @Override
+    public int compareTo(Point p2) {
+        double dist1 = this.distanceFromOrigin();
+        double dist2 = p2.distanceFromOrigin();
+
+        if(dist1 < dist2)
+                return -1;
+        else if(dist1 > dist2)
+                return 1;
+        else
+                return 0;
+    }
+} 
+
+
+LinkedList<Point> getKNearestPoints(Point [] myList, int k) {
+	PriorityQueue<Point> heap = new PriorityQueue<Point>(k);
+	for (Point currentPoint : myList) {
+		heap.add(currentPoint.distanceFromOrigin());
+		if (heap.size()>k) {
+			heap.poll();
+		}
+	}
+
+	LinkedList<Point> resultList = new LinkedList<Point>();
+	Point pollNode = null;
+	int[] myArray = new Point[k];
+	int index = 0;
+	while (heap.size()>0) {
+		pollNode = heap.poll();
+		myArray[index] = pollNode;
+		index++;
+	}
+
+	return myArray;
+}
+
+
+time complexity analysis: time: O(nlogk);
